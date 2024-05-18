@@ -68,28 +68,88 @@ def delete_department():
 # You'll implement the employee functions in the lab
 
 def list_employees():
-    pass
+    employees = Employee.get_all()
+    if employees:
+        for employee in employees:
+            print(employee)
 
 
 def find_employee_by_name():
-    pass
+    name = input("Enter the employee's name: ")
+    if name:
+        employee = Employee.find_by_name(name)
+        if employee:
+            print(employee)
+        else:
+            print(f'Employee {name} not found')
 
 
 def find_employee_by_id():
-    pass
+    id_ = input("Enter the employee's id: ")
+    if id_:
+        employee = Employee.find_by_id(id_)
+        if employee:
+            print(employee)
+        else:
+            print(f'Employee {id_} not found')
 
 
 def create_employee():
-    pass
+    name = input("Enter the employee's name: ")
+    job_title = input("Enter the employee's job title: ")
+    department_id = int(input("Enter the employee's department id: "))
 
+    try:
+        employee = Employee.create(name, job_title, department_id)
+        print(f'Success: {employee}')
+
+    except Exception as exc:
+        print('Error creating employee: ', exc)
 
 def update_employee():
-    pass
+    id_ = int(input("Enter the employee's id: "))
+    employee = Employee.find_by_id(id_)
+    if employee:
+        try:
+            name = input("Enter the employee's new name: ")
+            if name:
+                employee._name = name
+            else:
+                print('Error')
+            job_title = input("Enter the employee's new job title: ")
+            if job_title:
+                employee._job_title = job_title
+            else:
+                print('Error')
+            department_id = int(input("Enter the employee's new department id: "))
+            if department_id:
+                employee._department_id = department_id
+            else:
+                print('Error')    
+            employee.update()
+            print(f'Success: {employee}')
+        except Exception as exc:
+            print('Error updating employee: ', exc)
 
 
 def delete_employee():
-    pass
+    id_ = int(input("Enter the employee's id: "))
+    if id_:
+        employee = Employee.find_by_id(id_)
+        if employee:
+            Employee.delete(employee)
+            print ("Success!")
+        else:
+            print('Invalid employee id')
+    else:
+        print('Error')
+
 
 
 def list_department_employees():
-    pass
+    id_ = int(input("Enter department's id: "))
+    if id_:
+        employees = Employee.get_all()
+        for employee in employees:
+            if employee.department_id == id_:
+                print(employee)
